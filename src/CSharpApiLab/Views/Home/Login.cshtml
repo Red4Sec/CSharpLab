@@ -1,0 +1,39 @@
+﻿@using CSharpApiLab.DB
+@{
+    ViewData["Title"] = "Login";
+
+    int errorCode = (int)Model;
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Fill your user information</p>
+
+<form action="/users/login" method="get">
+    <input type="hidden" name="redirectOK" value="/home/index">
+    <input type="hidden" name="redirectError" value="/home/login/?errorCode=1">
+    <table>
+        <tr>
+            <td>
+                <p><input type="text" name="email" value="test@test.com"></p>
+            </td>
+            <td>
+                <p><input type="password" name="password" value="123"></p>
+            </td>
+        </tr>
+        @{
+            if (errorCode == 1)
+            {
+                <tr>
+                    <td colspan="2">
+                        <strong>Username or password is wrong</strong>
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="2">
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>

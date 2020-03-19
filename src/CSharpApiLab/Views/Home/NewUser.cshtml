@@ -1,0 +1,47 @@
+﻿@using CSharpApiLab.DB
+@{
+    ViewData["Title"] = "NewUser";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Fill your user information</p>
+
+<form action="/users/new/?redirectOk=/home/login" method="post">
+    <table>
+        <tr>
+            <td>
+                Name:
+                <p><input type="text" name="name" value="test"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email:
+                <p><input type="text" name="email" value="test@test.com"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Role:
+                <p><input type="text" name="role" value="User"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password:
+                <p><input type="password" name="password" value="123"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password confirmation:
+                <p><input type="password" name="passwordConfirmation" value="123"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>

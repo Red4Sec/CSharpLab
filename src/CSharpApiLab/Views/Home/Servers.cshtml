@@ -1,0 +1,116 @@
+﻿@using CSharpApiLab.DB
+@using Microsoft.AspNetCore.Html
+@{
+    ViewData["Title"] = "Servers";
+    int maxId = 1;
+
+    var userId = User.Claims.Where(u => u.Type == "id").Select(u => u.Value).FirstOrDefault();
+}
+@functions
+{
+    IHtmlContent RenderRow(Server item)
+    {
+        return Html.Raw($@"
+<tr>
+
+<td>
+    <p>{item.ID}</p>
+</td>
+<td>
+    <p>{item.Name}</p>
+</td>
+<td>
+    <p>{item.Ip}</p>
+</td>
+<td>
+    <input type='hidden' name='id' value='{item.ID}'>
+    <button onclick='sendPing({item.ID})'>Ping</button>
+</td>
+<td>
+    <form action='/servers/delete' method='get'>
+        <input type='hidden' name='userId' value='{item.UserId}'>
+        <input type='hidden' name='id' value='{item.ID}'>
+        <input type='hidden' name='redirectOK' value='/home/servers'>
+        <button type='submit'>Delete</button>
+    </form>
+</td>
+</tr>");
+    }
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Below you can see the product list</p>
+
+<table border="1">
+    <tr>
+        <td>
+            <p><strong>Id</strong></p>
+        </td>
+        <td>
+            <p><strong>Name</strong></p>
+        </td>
+        <td>
+            <p><strong>Ip</strong></p>
+        </td>
+        <td colspan="2">
+            <p><strong>Actions</strong></p>
+        </td>
+    </tr>
+    @{
+        foreach (var product in Model as IEnumerable<Server>)
+        {
+            @RenderRow(product);
+            maxId = Math.Max(maxId, product.ID + 1);
+        }
+    }
+</table>
+<br />
+
+<form action="/servers/new" method="get">
+    <table>
+        <tr>
+            <td colspan="3">
+                <p>New entry</p>
+                <input type="hidden" name="redirectOK" value="/home/servers">
+                <input type="hidden" name="userId" value="@userId">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><input type="text" name="id" value="@maxId"></p>
+            </td>
+            <td>
+                <p><input type="text" name="name" value="name-@maxId"></p>
+            </td>
+            <td>
+                <p><input type="text" name="ip" value="192.168.1.@maxId"></p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <button type="submit">New</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<br />
+
+<p id="ping_result"></p>
+
+<script>
+    function sendPing(id)
+    {
+        document.getElementById("ping_result").innerHTML = "<pre>Executing ping ...</pre>";
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function ()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                document.getElementById("ping_result").innerHTML = "<pre>" + this.responseText + "</pre>";
+            }
+        };
+        xhttp.open("GET", "/servers/ping?userId=@userId&id=" + id, true);
+        xhttp.send();
+    }
+</script>

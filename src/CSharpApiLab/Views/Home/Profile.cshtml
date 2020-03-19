@@ -1,0 +1,83 @@
+﻿@using CSharpApiLab.DB
+@{
+    ViewData["Title"] = "Profile";
+
+    var user = (CSharpApiLab.DB.User)Model;
+    var errorCode = Convert.ToInt32(ViewContext.HttpContext.Request.Query["errorCode"].FirstOrDefault() ?? "0");
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>This is your information</p>
+
+<table>
+    <tr>
+        <td>
+            <form action="/users/update/?redirectOk=/home/profile&redirectError=/home/profile?errorCode=1" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            Name:
+                            <p><input type="text" name="name" value="@user.Name"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Email:
+                            <p><input type="text" name="email" value="@user.Email"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Role:
+                            <p><input type="text" name="role" value="@user.Role"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password:
+                            <p><input type="password" name="password" value=""></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password confirmation:
+                            <p><input type="password" name="passwordConfirmation" value=""></p>
+                        </td>
+                    </tr>
+                    @{
+                        if (errorCode == 1)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>Some fields are wrong</strong>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    <tr>
+                        <td>
+                            <button type="submit">Submit</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+        <td>
+            <img src="/users/avatar/?avatarPath=@user.Avatar" width="100" height="100">
+
+            <form method="post" enctype="multipart/form-data" asp-controller="Users" asp-action="updateAvatar" asp-route-redirectOk="/home/profile">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload one or more files using this form:</p>
+                        <input type="file" name="file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
+        </td>
+    </tr>
+</table>
