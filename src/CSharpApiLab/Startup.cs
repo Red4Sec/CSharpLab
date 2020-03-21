@@ -82,7 +82,7 @@ namespace CSharpApiLab
 
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
