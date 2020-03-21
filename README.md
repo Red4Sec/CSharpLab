@@ -17,11 +17,24 @@ CSharpApiLab includes:
   - RCE
   - LFI
   - File Upload
+  - User enumeration
+  - Open Redirect
   - and more
 
 # ObfuscationSample
 
-ObfuscationSample it's a project for practice the with your favorite decompiler. We recommend [dnSpy](https://github.com/0xd4d/dnSpy)
+ObfuscationSample it's a project for practice with your favorite decompiler. We recommend [dnSpy](https://github.com/0xd4d/dnSpy)
+
+# Usage
+
+You can create a docker container like this:
+
+```
+docker build . -t red4sec/csharpapilab
+docker run --rm -it -p 8081:80 red4sec/csharpapilab
+```
+
+After that, just go to http://localhost:8081
 
 # Warning
 Do not expose CSharpApiLAb to the Internet, your server will be compromised immediately after exposure.
